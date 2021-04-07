@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+
 const Result = require("./model/result.model");
+const Count = require("./model/count.model");
 require("dotenv").config();
 
 const app = express();
@@ -29,6 +31,9 @@ app.post("/get_result/:year/:semester/:roll", async (req, res) => {
 
   if (!result) return res.status(400).json({ msg: "Not found !" });
 
+  //Search counter
+  await Count.updateOne({ count: "searchCount" }, { $inc: { totalSearch: 1 } });
+
   res.send(result);
 });
 // get all semester results
@@ -40,6 +45,9 @@ app.post("/get_result_all/:roll", async (req, res) => {
   const result = await Result.find({ roll });
 
   if (result.length === 0) return res.status(400).json({ msg: "Not found !" });
+
+  //Search counter
+  await Count.updateOne({ count: "searchCount" }, { $inc: { totalSearch: 1 } });
 
   res.send(result);
 });
