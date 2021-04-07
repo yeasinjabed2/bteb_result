@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const resultSchema = mongoose.Schema({
-  roll: { type: Number, required: true },
+  roll: { type: String, required: true },
   year: { type: Number, required: true },
   status: { type: String, required: true },
   semester: { type: Number, required: true },
