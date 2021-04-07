@@ -22,7 +22,12 @@ mongoose
 app.post("/get_result/:year/:semester/:roll", async (req, res) => {
   const { year, roll, semester } = req.params;
 
+  if (!year || !roll || !semester)
+    return res.status(400).send("Filed is required !");
+
   const result = await Result.findOne({ roll, year, semester });
+
+  if (!result) return res.status(400).json({ msg: "Not found !" });
 
   res.send(result);
 });
@@ -30,7 +35,11 @@ app.post("/get_result/:year/:semester/:roll", async (req, res) => {
 app.post("/get_result_all/:roll", async (req, res) => {
   const { roll } = req.params;
 
+  if (!roll) return res.status(400).send("Filed is required !");
+
   const result = await Result.find({ roll });
+
+  if (result.length === 0) return res.status(400).json({ msg: "Not found !" });
 
   res.send(result);
 });
